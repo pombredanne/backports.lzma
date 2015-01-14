@@ -560,6 +560,16 @@ class FileTestCase(unittest.TestCase):
             f.close()
         self.assertRaises(ValueError, f.seekable)
 
+        with TempFile(TESTFN, COMPRESSED_XZ):
+            f = LZMAFile(TESTFN)
+            try:
+                self.assertTrue(f.seekable())
+                f.read()
+                self.assertTrue(f.seekable())
+            finally:
+                f.close()
+            self.assertRaises(ValueError, f.seekable)
+
         f = LZMAFile(BytesIO(), "w")
         try:
             self.assertFalse(f.seekable())
@@ -1037,6 +1047,16 @@ class OpenTestCase(unittest.TestCase):
                 f.write(INPUT)
             with lzma.open(TESTFN, "rb") as f:
                 self.assertEqual(f.read(), INPUT * 2)
+
+    def test_unicode_filename(self):
+        if sys.version_info >= (3,):
+            return
+        ufile = unicode(TESTFN)
+        with TempFile(ufile):
+            with lzma.open(ufile, "wb") as f:
+                f.write(INPUT)
+            with lzma.open(ufile, "rb") as f:
+                self.assertEqual(f.read(), INPUT)
 
     def test_bad_params(self):
         # Test invalid parameter combinations.

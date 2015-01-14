@@ -32,8 +32,8 @@ home = os.path.expanduser("~")
 extens = [Extension('backports/lzma/_lzma',
                     ['backports/lzma/_lzmamodule.c'],
                     libraries = ['lzma'],
-                    include_dirs = [os.path.join(home, 'include')],
-                    library_dirs = [os.path.join(home, 'lib')]
+                    include_dirs = [os.path.join(home, 'include'), '/opt/local/include', '/usr/local/include'],
+                    library_dirs = [os.path.join(home, 'lib'), '/opt/local/lib', '/usr/local/lib']
                     )]
 
 descr = "Backport of Python 3.3's 'lzma' module for XZ/LZMA compressed files."
@@ -56,11 +56,10 @@ setup(
     author_email = "p.j.a.cock@googlemail.com",
     url = "https://github.com/peterjc/backports.lzma",
     license='3-clause BSD License',
-    keywords = "xy lzma compression decompression",
+    keywords = "xz lzma compression decompression",
     long_description = long_descr,
     classifiers = [
-        #'Development Status :: 5 - Production/Stable',
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
@@ -72,6 +71,7 @@ setup(
         'Topic :: System :: Archiving :: Compression',
     ],
     packages = packages,
+    namespace_packages = ['backports'],
     ext_modules = extens,
     cmdclass = {
         'build_ext': build_ext,

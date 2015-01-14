@@ -12,8 +12,8 @@ This code is a backport of the Python 3.3 standard library module 'lzma'
 for use on older versions of Python where it was not included. It is
 available from PyPI (released downloads only) and GitHub (repository):
 
- * PyPI - http://pypi.python.org/pypi/backports.lzma/
- * GitHub - https://github.com/peterjc/backports.lzma
+* PyPI - http://pypi.python.org/pypi/backports.lzma/
+* GitHub - https://github.com/peterjc/backports.lzma
 
 There are some older Python libraries like PylibLZMA and PyLZMA
 but these are both using LZMA Utils (not XZ Utils, so they have
@@ -30,8 +30,8 @@ Supported Platforms
 The 'lmza' module provided with Python 3.3 should work on all the
 main operating systems, so in theory so too should this backport:
 
-* Mac OS X: Tested under Python 2.6, 2.7, 3.0, 3.1, 3.2 and 3.3
-* Linux: Tested under Python 2.6, 2.7, 3.0, 3.1, 3.2 and 3.3
+* Mac OS X: Tested under Python 2.6, 2.7, 3.0 to 3.4 inclusive
+* Linux: Tested under Python 2.6, 2.7, 3.0 to 3.4 inclusive
 * Windows: Untested (so far)
 
 Other than some minor changes in the exceptions for some errors,
@@ -109,6 +109,20 @@ Rhodes as documented here: http://pypi.python.org/pypi/backports/
 and http://bitbucket.org/brandon/backports
 
 
+Revisions
+=========
+
+ * v0.0.1 - January 2013
+    * First public release
+ * v0.0.2 - April 2013
+    * Fix the seekable attribute on Python 2 (Tomer Chachamu)
+    * More search paths for lib/include headers (Wynn Wilkes)
+ * v0.0.3 - June 2014
+    * Supports unicode filenames on Python 2 (Irving Reid)
+ * v0.0.4 - September 2014
+    * Declare namespace package to avoid warnings (Ralph Bean)
+
+
 Contributors
 ============
 
@@ -116,6 +130,9 @@ The initial Python lzma module implementation was by Per Øyvind Karlsen,
 which was then rewritten by Nadeem Vawda and included with Python 3.3.
 Based on this work, it was backported to also run on Python 2.6, 2.7 and
 3.0, 3.1 and 3.2 by Peter Cock.
+
+Later contributors include: Tomer Chachamu, Wynn Wilkes, Irving Reid,
+Ralph Bean
 
 
 Bug Reports
@@ -131,6 +148,22 @@ If you can demonstrate a problem in this backport but not in the
 something we will need to fix. Any issues in the 'lzma' module as
 bundled with Python 3.3 or later should be reported to the Python 
 project at http://bugs.python.org instead.
+
+
+Release Process
+===============
+
+After testing locally and with TravisCI (see below), new releases
+are tagged in git as follows:
+
+    $ git tag backports.lzma.vX.X.X
+
+I then use the following to upload a new release to the Python
+Packaging Index (PyPI):
+
+    $ python setup.py register sdist upload
+
+The update then appears on http://pypi.python.org/pypi/backports.lzma/
 
 
 Automated Testing

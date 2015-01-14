@@ -21,12 +21,6 @@ __all__ = [
     "open", "compress", "decompress", "is_check_supported",
 ]
 
-try:
-    #Python 3
-    import builtins
-except ImportError:
-    #Python 2
-    import __builtin__ as builtins
 import io
 from ._lzma import *
 from ._lzma import _encode_filter_properties, _decode_filter_properties
@@ -40,7 +34,7 @@ _MODE_WRITE    = 3
 _BUFFER_SIZE = 8192
 
 
-__version__ = "0.0.1b"
+__version__ = "0.0.4"
 
 class LZMAFile(io.BufferedIOBase):
 
@@ -57,8 +51,8 @@ class LZMAFile(io.BufferedIOBase):
                  format=None, check=-1, preset=None, filters=None):
         """Open an LZMA-compressed file in binary mode.
 
-        filename can be either an actual file name (given as a str or
-        bytes object), in which case the named file is opened, or it can
+        filename can be either an actual file name (given as a str, unicode
+        or bytes object), in which case the named file is opened, or it can
         be an existing file object to read from or write to.
 
         mode can be "r" for reading (default), "w" for (over)writing, or
@@ -127,17 +121,15 @@ class LZMAFile(io.BufferedIOBase):
         else:
             raise ValueError("Invalid mode: {!r}".format(mode))
 
-        if isinstance(filename, (str, bytes)):
-            if "b" not in mode:
-                mode += "b"
-            self._fp = builtins.open(filename, mode)
-            self._closefp = True
-            self._mode = mode_code
-        elif hasattr(filename, "read") or hasattr(filename, "write"):
+        if hasattr(filename, "read") or hasattr(filename, "write"):
             self._fp = filename
             self._mode = mode_code
         else:
-            raise TypeError("filename must be a str or bytes object, or a file")
+            if "b" not in mode:
+                mode += "b"
+            self._fp = io.open(filename, mode)
+            self._closefp = True
+            self._mode = mode_code
 
     def close(self):
         """Flush and close the file.
